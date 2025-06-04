@@ -45,7 +45,7 @@ def load_llm_pipeline(model_id):
     tokenizer = AutoTokenizer.from_pretrained(model_id, use_auth_token=token)
     bnb_config = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_use_double_quant=True, bnb_4bit_compute_dtype=torch.float16)
 
-    model = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=bnb_config, device_map="cuda", use_auth_token=token)
+    model = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=bnb_config, device_map="auto", use_auth_token=token)
 
     gen_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer, temperature=0.1, max_new_tokens=512)
     return HuggingFacePipeline(pipeline=gen_pipeline)
